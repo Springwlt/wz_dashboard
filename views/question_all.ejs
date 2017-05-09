@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<%- include head.ejs %>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <%- include header.ejs %>
+    <%- include menu.ejs %>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                全部问题
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-edit"></i>问题</a></li>
+                <li><a href="#">全部问题</a></li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <!-- /.box-header -->
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table id="example" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="350px">问题内容
+                                    </th>
+                                    <th width="50px">回复数</th>
+                                    <th width="50px">日期</th>
+                                    <th width="50px">类型</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% datas.forEach(function (data) { %>
+                                <tr>
+                                    <td>
+                                        <%= data.question.questionContent %>
+                                        <div class="row-actions">
+                                            <span class="trash">
+                                                <a href="/question/<%= data.question._id %>/updater/">修改</a>
+                                            </span>
+                                            <span class="trash">
+                                               | <a class="submitdelete" data-toggle="modal" data-target="#<%= data.question._id %>">删除</a>
+                                                <div class="modal fade" id=<%= data.question._id %> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                    &times;
+                                                                </button>
+                                                                <h4 class="modal-title" id="myModalLabel">
+                                                                    问题
+                                                                </h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                你真的确定要删除此条问题吗？
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary" onclick="deleteQuestion('<%= data.question._id %>')">删除</button>
+                                                            </div>
+                                                        </div><!-- /.modal-content -->
+                                                    </div><!-- /.modal -->
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/question/<%= data.question._id %>/edit">
+                                        <% if(data.answer == undefined){ %>
+                                        0
+                                        <% }else{ %>
+                                        <%= data.answer.respondenContent.length %>
+                                        <% } %>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <%= data.question.questionCreateDate %>
+                                    </td>
+                                    <td>
+                                        <% if(data.question.type== 'ordinal'){ %>
+                                            普通提问
+                                        <% }else {%>
+                                            快速提问
+                                        <% }%>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+    </div>
+    <!-- /.content-wrapper -->
+</div>
+<!-- ./wrapper -->
+<%- include foot_scipt.ejs %>
+<script>
+    $(function () {
+        $("#question").addClass("active");
+        $("#questionAll").addClass("active");
+        $("#menuImg").attr('src','<%=user.head %>');
+        $("#headerImg").attr('src','<%=user.head %>');
+        $("#onlineAdmin").html('<%=user.username %>');
+    });
+    function deleteQuestion(questionId){
+        $.ajax({
+            url: '/question/delete',
+            type: 'post',
+            data: {
+                questionId: questionId
+            },
+            success: function(result) {
+                if (result.data === 'ok') {
+                    $(location).attr('href', '/question_all');
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<%- include head.ejs %>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+    <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <%- include header.ejs %>
+    <%- include menu.ejs %>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                标签
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-edit"></i>问题</a></li>
+                <li><a href="#">标签</a></li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="box">
+                        <div class="box-body box-profile">
+                            <p class="text-center">修改标签</p>
+                            <br/>
+                            <input type="text" class="form-control" value="" id="questionId" style="display: none">
+                            <div class="form-group">
+                                <label for="tagsName">标签名</label>
+                                <input type="text" class="form-control" id="tagName" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="Slug">标签内容</label>
+                                <textarea class="form-control" rows="3" id="tagContent"></textarea>
+                            </div>
+                            <br/>
+                            <button type="button" class="btn btn-primary" id="update">修改</button>
+                            <br/>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="box">
+                        <div class="box-body box-profile">
+                            <div class="box-body">
+                                <table id="example" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th width="60px">标签名</th>
+                                        <th width="300px">标签内容</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <% tags.forEach(function (tag) { %>
+                                    <tr>
+                                        <td>
+                                            <%=tag.tagname %>
+                                            <div class="row-actions">
+                                            <span class="edit">
+                                                <a href="#" onclick="updateTag('<%=tag._id %>','<%=tag.tagname %>','<%=tag.tagcontent %>')">修改</a>
+                                            </span>
+                                            <span class="trash">
+                                               | <a class="submitdelete" data-toggle="modal" data-target="#<%= tag._id %>">删除</a>
+                                                <div class="modal fade" id="<%=tag._id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                </button>
+                                                                <h4 class="modal-title" id="myModalLabel">
+                                                                    标签
+                                                                </h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                你真的确定要删除此标签吗？
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary" onclick="deleteTag('<%=tag._id%>')">删除</button>
+                                                            </div>
+                                                        </div><!-- /.modal-content -->
+                                                    </div><!-- /.modal -->
+                                                </div>
+                                            </span>
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <%=tag.tagcontent %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                    </tbody>
+                                    <tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- /.content-wrapper -->
+    <script>
+        $(function () {
+            $("#question").addClass("active");
+            $("#questionTag").addClass("active");
+            $("#menuImg").attr('src','<%=user.head %>');
+            $("#headerImg").attr('src','<%=user.head %>');
+            $("#onlineAdmin").html('<%=user.username %>');
+        });
+
+        $("#addNewTag").click(function () {
+            var tagcontent = document.getElementById("tagContent").value;
+            var tagname = document.getElementById("tagName").value;
+            $.ajax({
+                url: '/tag/save',
+                type: 'post',
+                data: {
+                    tagname: tagname,
+                    tagcontent: tagcontent
+                },
+                success: function (result) {
+                    if (result.data === 'ok') {
+                        $(location).attr('href', '/topic-tags');
+                    }
+                }
+            });
+        });
+        function updateTag(id,tagname,tagcontent){
+            document.getElementById('questionId').value = id;
+            document.getElementById('tagName').value = tagname;
+            document.getElementById('tagContent').value = tagcontent;
+        }
+        $("#update").click(function () {
+            var tagId = document.getElementById('questionId').value;
+            var tagcontent = document.getElementById("tagContent").value;
+            var tagname = document.getElementById("tagName").value;
+            $.ajax({
+                url: '/tag/update',
+                type: 'post',
+                data: {
+                    tagId :tagId,
+                    tagname: tagname,
+                    tagcontent: tagcontent
+                },
+                success: function (result) {
+                    if (result.data === 'ok') {
+                        $(location).attr('href', '/tags');
+                    }
+                }
+            });
+        });
+        function deleteTag(tagId) {
+            $.ajax({
+                url: '/tag/delete',
+                type: 'post',
+                data: {
+                    tagId: tagId
+                },
+                success: function (result) {
+                    if (result.data === 'ok') {
+                        $(location).attr('href', '/tags');
+                    }
+                }
+            });
+        }
+
+    </script>
+    <%- include footer.ejs %>
+
+</div>
+<!-- ./wrapper -->
+
+<%- include foot_scipt.ejs %>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!-- Left side column. contains the sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img class="img-circle" alt="User Image" id="menuImg">
+            </div>
+            <div class="pull-left info">
+                <div id="onlineAdmin"></div>
+                <a href="#"><i class="fa fa-circle text-success"></i>在线</a>
+            </div>
+        </div>
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="请输入待搜索内容...">
+                <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+            <li class="header">菜单栏</li>
+            <li class="active">
+                <a href="#">
+                    <i class="fa fa-dashboard"></i> <span>仪表盘</span>
+                </a>
+            </li>
+            <li class="treeview" id="question">
+                <a href="#">
+                    <i class="fa fa-edit"></i>
+                    <span>问题</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="questionAll"><a href="#" onclick="changeURL('question_all')"><i class="fa fa-circle-o"></i> 全部问题</a></li>
+                    <li id="questionNew"><a href="#" onclick="changeURL('question_new')"><i class="fa fa-circle-o"></i> 创建问题</a></li>
+                    <li id="questionTag"><a href="#" onclick="changeURL('tags')" ><i class="fa fa-circle-o"></i> 标签</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview" id="user">
+                <a href="#">
+                    <i class="fa fa-user"></i>
+                    <span>用户</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="adminAll"><a href="#" onclick="changeURL('admin_all')"><i class="fa fa-circle-o"></i> 管理员列表</a></li>
+                    <li id="supervisorAll"><a href="#"onclick="changeURL('supervisor_all')" ><i class="fa fa-circle-o"></i> 专家列表</a></li>
+                    <li id="userAll"><a href="#"onclick="changeURL('user_all')" ><i class="fa fa-circle-o"></i>用户列表</a></li>
+                </ul>
+            </li>
+            <li class="treeview" id="goods">
+                <a href="#">
+                    <i class="fa fa-archive"></i>
+                    <span>商品</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="goodsNew"><a href="#" onclick="changeURL('goods_new')"><i class="fa fa-circle-o"></i> 新增商品</a></li>
+                    <li id="homePage"><a href="#" onclick="changeURL('home_page')"><i class="fa fa-circle-o"></i> 网站轮廓图</a></li>
+                    <li id="goodsAll"><a href="#" onclick="changeURL('goods_all')"><i class="fa fa-circle-o"></i> 商品列表</a></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+<script>
+    function changeURL(url) {
+        var newurl = "/"+url;
+        $(location).attr('href', newurl);
+    }
+</script>

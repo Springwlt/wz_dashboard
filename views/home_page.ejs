@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<%- include head.ejs %>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+    <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <%- include header.ejs %>
+    <%- include menu.ejs %>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                上次图片
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-user-md"></i> 商品</a></li>
+                <li><a href="#">商品列表</a></li>
+            </ol>
+        </section>
+        <!-- Main content -->
+        <form method="post" action="/home/add" enctype="multipart/form-data">
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="box">
+                            <div class="box-body box-profile">
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <br/>
+                                        <label>请选择第一个图像文件：</label>
+                                        <br/>
+                                        <br/>
+                                        <input type="file" id="file_input" name="picture" multiple/>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box">
+                            <div class="box-body box-profile">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+    <!-- /.content-wrapper -->
+    <%- include footer.ejs %>
+    <script>
+        $(function () {
+            $("#goods").addClass("active");
+            $("#homePage").addClass("active");
+            $("#menuImg").attr('src','<%=user.head %>');
+            $("#headerImg").attr('src','<%=user.head %>');
+            $("#onlineAdmin").html('<%=user.username %>');
+        });
+    </script>
+</div>
+<!-- ./wrapper -->
+
+<%- include foot_scipt.ejs %>
+</body>
+</html>

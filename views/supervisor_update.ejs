@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<%- include head.ejs %>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+    <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <%- include header.ejs %>
+    <%- include menu.ejs %>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                新增专家
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-user-md"></i> 用户</a></li>
+                <li><a href="#">新增专家</a></li>
+            </ol>
+        </section>
+        <!-- Main content -->
+        <form method="post" action="/supervisor/updater">
+            <section class="content">
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="box">
+                            <div class="box-body box-profile">
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="nickname">姓名</label>
+                                        <input type="text" class="form-control" name="nickname" value='<%=supervisor.nickname %>' >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="objectId">微信Id</label>
+                                        <input type="text" class="form-control" name="objectId" value='<%=supervisor.objectId %>' readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="brief">简短介绍</label>
+                                        <textarea class="form-control" style="height: 60px" name="brief" id="brief">
+
+                                        </textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">详细介绍</label>
+                                        <textarea class="form-control" style="height: 120px" name="description" id="description">
+                                        </textarea>
+                                    </div>
+                                    <br/>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box">
+                            <div class="box-body box-profile">
+                                <div class="form-group">
+                                    <label for="reward">价格</label>
+                                    <input type="text" class="form-control" name="reward" value='<%=supervisor.reward %>'>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">类型</label>
+                                    <div class="form-group">
+                                        <select class="form-control" name="tag">
+                                            <option value="0">---请选择你的职业类型---</option>
+                                            <option value="专业律师">专业律师</option>
+                                            <option value="专业打杂">专业打杂</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+    <!-- /.content-wrapper -->
+    <%- include footer.ejs %>
+    <script>
+        $(function () {
+            $("#user").addClass("active");
+            $("#supervisorAll").addClass("active");
+            $("#menuImg").attr('src','<%=user.head %>');
+            $("#headerImg").attr('src','<%=user.head %>');
+            $("#onlineAdmin").html('<%=user.username %>');
+        });
+        $(document).ready(function(){
+            document.getElementById("brief").innerHTML = '<%=supervisor.brief %>';
+            document.getElementById("description").innerHTML = '<%=supervisor.description %>';
+        });
+    </script>
+</div>
+<!-- ./wrapper -->
+
+<%- include foot_scipt.ejs %>
+</body>
+</html>

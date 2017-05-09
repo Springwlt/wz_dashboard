@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<%- include head.ejs %>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <%- include header.ejs %>
+    <%- include menu.ejs %>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>用户列表  <a class="btn btn-primary" href="#" role="button" onclick="changeURL('user_new')">新增用户</a> </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-user"></i> 用户</a></li>
+                <li><a href="#">用户列表</a></li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <!-- /.box-header -->
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <table id="example" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="150px">电话号码
+                                    </th>
+                                    <th width="100px">用户名</th>
+                                    <th width="100px">性别</th>
+                                    <th width="100px">用户图像</th>
+                                </tr>
+                                </thead>
+                                <% users.forEach(function (user) { %>
+                                <tr>
+                                    <td>
+                                        <div class="row-actions">
+                                            <span class="edit">
+                                                <%= user.mobilephone %>
+                                            </span>
+                                            <br/>
+                                            <span class="edit">
+                                                <a href="/user/<%= user._id %>/updater/">修改</a>
+                                            </span>
+                                            <span class="trash">
+                                               | <a class="submitdelete" data-toggle="modal" data-target="#<%= user._id %>">删除</a>
+                                                <div class="modal fade" id=<%= user._id %> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                    &times;
+                                                                </button>
+                                                                <h4 class="modal-title" id="myModalLabel">
+                                                                    专家
+                                                                </h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                你真的确定要删除专家吗？
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary">删除</button>
+                                                            </div>
+                                                        </div><!-- /.modal-content -->
+                                                    </div><!-- /.modal -->
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <%= user.nickname %>
+                                    </td>
+                                    <td>
+                                        <% if(user.sex == 0){%>
+                                            女
+                                        <% } %>
+                                        <% if(user.sex == 1){%>
+                                            男
+                                        <% } %>
+                                        <% if(user.sex == 2){%>
+                                            其他
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <%= user.head %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+    </div>
+    <!-- /.content-wrapper -->
+</div>
+<!-- ./wrapper -->
+<%- include foot_scipt.ejs %>
+<script>
+    $(function () {
+        $("#user").addClass("active");
+        $("#userAll").addClass("active");
+        $("#menuImg").attr('src','<%=user.head %>');
+        $("#headerImg").attr('src','<%=user.head %>');
+        $("#onlineAdmin").html('<%=user.username %>');
+    });
+    function deleteQuestion(questionId){
+        $.ajax({
+            url: '/question/delete',
+            type: 'post',
+            data: {
+                questionId: questionId
+            },
+            success: function(result) {
+                if (result.data === 'ok') {
+                    $(location).attr('href', '/question_all');
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

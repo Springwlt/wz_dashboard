@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<%- include head.ejs %>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+    <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <%- include header.ejs %>
+    <!-- Left side column. contains the sidebar -->
+    <%- include menu.ejs %>
+    <style>
+        .correct .fa {
+            color: #5cb85c;
+        }
+
+        .error .fa {
+            color: #d9534f;
+        }
+    </style>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                管理员列表
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-user"></i> 用户</a></li>
+                <li><a href="#">管理员列表</a></li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="example" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="150px">用户名</th>
+                                    <th width="150px">邮箱</th>
+                                    <th width="300px">简介</th>
+                                    <th width="80px">激活</th>
+                                    <th width="80px">超管</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% admins.forEach(function (admin) { %>
+                                <tr>
+                                    <td>
+                                        <%= admin.username %>
+                                        <div class="row-actions">
+                                            <span class="edit">
+                                                <a href="/admin/<%= admin.username %>/updater/">修改</a>
+                                            </span>
+                                            <% if(admin.superadmin == false){ %>
+                                            <span class="trash">
+                                               | <a class="submitdelete" data-toggle="modal"
+                                                    data-target="#<%= admin.username %>">删除</a>
+                                                <div class="modal fade" id="<%= admin.username %>" tabindex="-1"
+                                                     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-hidden="true">
+                                                                    &times;
+                                                                </button>
+                                                                <h4 class="modal-title" id="myModalLabel">
+                                                                    管理员
+                                                                </h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                你真的确定要删除<%= admin.username %>吗？
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">取消
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary"
+                                                                        onclick="deleteAdmin('<%= admin.username %>')">删除</button>
+                                                            </div>
+                                                        </div><!-- /.modal-content -->
+                                                    </div><!-- /.modal -->
+                                                </div>
+                                            </span>
+                                            <% } %>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <%= admin.email %>
+                                    </td>
+                                    <td>
+                                        <%= admin.introduction %>
+                                    </td>
+                                    <td>
+                                        <% if(admin.active == false){ %>
+                                        <ul class="list-inline correct">
+                                            <li><i class="fa fa-times"></i></li>
+                                        </ul>
+                                        <% }else{ %>
+                                        <ul class="list-inline error">
+                                            <li><i class="fa fa-check"></i></li>
+                                        </ul>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if(admin.superadmin == false){ %>
+                                        <ul class="list-inline correct">
+                                            <li><i class="fa fa-times"></i></li>
+                                        </ul>
+                                        <% }else{ %>
+                                        <ul class="list-inline error">
+                                            <li><i class="fa fa-check"></i></li>
+                                        </ul>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+    </div>
+    <!-- /.content-wrapper -->
+    <%- include footer.ejs %>
+    <script>
+        $(function () {
+            $("#user").addClass("active");
+            $("#adminAll").addClass("active");
+            $("#menuImg").attr('src','<%=user.head %>');
+            $("#headerImg").attr('src','<%=user.head %>');
+            $("#onlineAdmin").html('<%=user.username %>');
+        });
+        function deleteAdmin(username) {
+            $.ajax({
+                url: '/admin/delete',
+                type: 'post',
+                data: {
+                    username: username
+                },
+                success: function (result) {
+                    if (result.data === 'ok') {
+                        $(location).attr('href', '/admin_all');
+                    }
+                }
+            });
+        }
+    </script>
+</div>
+<!-- ./wrapper -->
+<%- include foot_scipt.ejs %>
+</body>
+</html>¬

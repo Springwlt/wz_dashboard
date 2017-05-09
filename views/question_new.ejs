@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<%- include head.ejs %>
+
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+    <script src="/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <%- include header.ejs %>
+    <%- include menu.ejs %>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                创建问题
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-edit"></i> 问题</a></li>
+                <li><a href="#">创建新问起</a></li>
+            </ol>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="box">
+                        <div class="box-body box-profile">
+                            <div class="form-group">
+                                <label for="objectId">微信ID</label>
+                                <input type="text" class="form-control" name="objectId" id="objectId">
+                            </div>
+                            <div class="form-group">
+                                <label for="objectId">问题内容</label>
+                                <textarea id="compose-textarea" class="form-control" style="height: 300px"
+                                          name="content">
+
+                                </textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" id="ordinary" class="btn btn-primary">发布</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="active tab-pane" id="activity">
+                        <div class="box" style="height:400px; overflow:auto">
+                            <div class="box-header">
+                                <i class="ion ion-clipboard"></i>
+
+                                <h3 class="box-title">专家列表</h3>
+                            </div>
+                            <div class="box-body chat" id="chat-box">
+                                <% supervisors.forEach(function (supervisor) { %>
+                                <div class="item">
+                                    <img src="dist/img/user3-128x128.jpg" alt="user image" class="offline">
+                                    <p class="message">
+                                        <a href="#" class="name">
+                                            <%= supervisor.nickname %>
+                                            <small class="text-muted pull-right">
+                                                <input type="radio" name="optionsRadios"
+                                                       value='<%= supervisor.objectId %>'>
+                                            </small>
+                                        </a>
+                                        <%= supervisor.brief %>
+                                    </p>
+                                </div>
+                                <!-- /.item -->
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        $(function () {
+            $("#question").addClass("active");
+            $("#questionNew").addClass("active");
+            $("#menuImg").attr('src','<%=user.head %>');
+            $("#headerImg").attr('src','<%=user.head %>');
+            $("#onlineAdmin").html('<%=user.username %>');
+        });
+        $("#ordinary").click(function () {
+            var questionResponden = '';
+            var content = document.getElementById("compose-textarea").value;
+            var questionContent = content.split('>')[1].split('<')[0];
+            var typeOrdinary = document.getElementsByName('optionsRadios');
+            for (var i = 0; i < typeOrdinary.length; i++) {
+                if (typeOrdinary[i].checked) {
+                    questionResponden = typeOrdinary[i].value;
+                    break;
+                }
+            }
+            var objectId = document.getElementById('objectId').value;
+            $.ajax({
+                url: '/question/save/ordinary',
+                type: 'post',
+                data: {
+                    questionContent: questionContent,
+                    questionResponden: questionResponden,
+                    objectId: objectId
+                },
+                success: function (result) {
+                    if (result.data === 'ok') {
+                        $(location).attr('href', '/question_all');
+                    }
+                }
+            });
+
+        });
+
+        $("#fast").click(function () {
+            var questionResponden = '';
+            var content = document.getElementById("compose-textarea").value;
+            var questionContent = content.split('>')[1].split('<')[0];
+            var type = document.getElementsByName('type');
+            for (var i = 0; i < type.length; i++) {
+                if (type[i].checked) {
+                    questionResponden = questionResponden + type[i].value + ',';
+                }
+            }
+            var objectId = document.getElementsByName('objectId').value;
+            $.ajax({
+                url: '/question/save/fast',
+                type: 'post',
+                data: {
+                    questionContent: questionContent,
+                    questionResponden: questionResponden,
+                    objectId: objectId
+                },
+                success: function (result) {
+                    if (result.data === 'ok') {
+                        $(location).attr('href', '/question_all');
+                    }
+                }
+            });
+
+        });
+    </script>
+</div>
+<!-- ./wrapper -->
+
+<%- include foot_scipt.ejs %>
+</body>
+</html>
